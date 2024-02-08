@@ -4,8 +4,10 @@ import {
   useEffect,
   FC,
   PropsWithChildren,
+  useState,
 } from "react";
-import { ITask, ITaskAction, ITaskContextState } from "../types";
+import { ITask, ITaskContextState } from "../types";
+import { taskReducer } from "./taskReducer";
 
 const initialState: ITask[] = JSON.parse(localStorage.getItem("tasks") || "[]");
 
@@ -14,26 +16,10 @@ export const TaskContext = createContext<ITaskContextState | undefined>(
   undefined
 );
 
-// Reducer function
-const taskReducer = (state: ITask[], action: ITaskAction): ITask[] => {
-  switch (action.type) {
-    case "ADD_TASK":
-      return [...state, action.payload];
-    case "DELETE_TASK":
-      return state.filter((task) => task.id !== action.payload.toString());
-    case "UPDATE_TASK":
-      return state.map((task) =>
-        task.id === action.payload.id.toString()
-          ? action.payload.updatedTask
-          : task
-      );
-    default:
-      return state;
-  }
-};
-
 export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
   const [tasks, dispatch] = useReducer(taskReducer, initialState);
+  const [taskForUpdate, setTaskForUpdate] = useState<ITask | null>(null);
+  const [needToUpdate, setNeedToUpdate] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -51,8 +37,26 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "UPDATE_TASK", payload: { id: taskId, updatedTask } });
   };
 
+  const getTaskById = (taskId: string) => {
+    const singleTask = tasks.find((task) => task.id === taskId);
+    if (singleTask) {
+      setTaskForUpdate(singleTask);
+      setNeedToUpdate(true);
+    }
+  };
+
   return (
-    <TaskContext.Provider value={{ tasks, addTask, deleteTask, updateTask }}>
+    <TaskContext.Provider
+      value={{
+        tasks,
+        addTask,
+        deleteTask,
+        updateTask,
+        getTaskById,
+        taskForUpdate,
+        needToUpdate,
+      }}
+    >
       {children}
     </TaskContext.Provider>
   );

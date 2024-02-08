@@ -1,14 +1,22 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTask } from "../hooks/useTask";
 import { ITask, Prority } from "../types";
-import { generateUUID } from "../utils/generateUUID";
+import { generateUUID } from "../utils";
 
 const TaskForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<Prority>("low");
-  const { addTask } = useTask();
+  const { addTask, taskForUpdate, updateTask, needToUpdate } = useTask();
+
+  useEffect(() => {
+    if (taskForUpdate && needToUpdate) {
+      setTitle(taskForUpdate.title || "");
+      setDescription(taskForUpdate.description || "");
+      setPriority(taskForUpdate.priority || "low");
+    }
+  }, [taskForUpdate, needToUpdate]);
 
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,8 +32,13 @@ const TaskForm = () => {
       status: "Incomplete",
     };
 
-    addTask(task);
-    toast.success("Task created success");
+    if (taskForUpdate && needToUpdate) {
+      updateTask(taskForUpdate.id, task);
+      toast.success("Task updated successfully");
+    } else {
+      addTask(task);
+      toast.success("Task created successfully");
+    }
     setTitle("");
     setDescription("");
     setPriority("low");

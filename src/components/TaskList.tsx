@@ -1,31 +1,19 @@
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
-import { ITask, Prority } from "../types";
+import { ITask } from "../types";
 import { useTask } from "../hooks/useTask";
 import { toast } from "react-toastify";
+import { getBorderColor } from "../utils";
 
 interface Props {
   task: ITask;
 }
 
 const TaskList = ({ task }: Props): JSX.Element => {
-  const { deleteTask } = useTask();
+  const { deleteTask, getTaskById } = useTask();
 
   const handleDelete = (id: string) => {
     deleteTask(id);
     toast.success("Taks deleted");
-  };
-
-  const getBorderColor = (priority: Prority): string => {
-    switch (priority) {
-      case "low":
-        return "border-blue-400";
-      case "medium":
-        return "border-yellow-400";
-      case "high":
-        return "border-red-400";
-      default:
-        return "border-gray-400";
-    }
   };
 
   return (
@@ -58,7 +46,10 @@ const TaskList = ({ task }: Props): JSX.Element => {
       <div>
         <div className="-mt-px flex divide-x divide-gray-200">
           <div className="flex w-0 flex-1">
-            <button className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-2 text-sm font-semibold text-gray-900">
+            <button
+              onClick={() => getTaskById(task.id)}
+              className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-2 text-sm font-semibold text-gray-900"
+            >
               <PencilIcon
                 className="h-5 w-5 text-gray-400"
                 aria-hidden="true"

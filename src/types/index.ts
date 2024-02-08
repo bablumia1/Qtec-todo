@@ -12,8 +12,11 @@ export interface ITask {
 export interface ITaskContextState {
   tasks: ITask[];
   addTask: (task: ITask) => void;
+  getTaskById: (taskId: string) => void;
   deleteTask: (taskId: string) => void;
   updateTask: (taskId: string, updatedTask: ITask) => void;
+  taskForUpdate: ITask | null;
+  needToUpdate: boolean;
 }
 
 export type ITaskAction =
