@@ -6,7 +6,7 @@ import {
   PropsWithChildren,
   useState,
 } from "react";
-import { ITask, ITaskContextState } from "../types";
+import { ITask, ITaskContextState, Status } from "../types";
 import { taskReducer } from "./taskReducer";
 
 const initialState: ITask[] = JSON.parse(localStorage.getItem("tasks") || "[]");
@@ -37,6 +37,13 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "UPDATE_TASK", payload: { id: taskId, updatedTask } });
   };
 
+  const changeStatus = (taskId: string, status: Status) => {
+    dispatch({
+      type: "CHANGE_STATUS",
+      payload: { id: taskId, status: status },
+    });
+  };
+
   const getTaskById = (taskId: string) => {
     const singleTask = tasks.find((task) => task.id === taskId);
     if (singleTask) {
@@ -44,6 +51,8 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
       setNeedToUpdate(true);
     }
   };
+
+  const clearNeedToUpdate = () => setNeedToUpdate(false);
 
   return (
     <TaskContext.Provider
@@ -55,6 +64,8 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
         getTaskById,
         taskForUpdate,
         needToUpdate,
+        changeStatus,
+        clearNeedToUpdate,
       }}
     >
       {children}

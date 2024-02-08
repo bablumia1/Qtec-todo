@@ -1,25 +1,35 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useTask } from "../hooks/useTask";
-import { ITask, Prority } from "../types";
+import { ITask, Prority, Status } from "../types";
 import { generateUUID } from "../utils";
 
 const TaskForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<Prority>("low");
-  const { addTask, taskForUpdate, updateTask, needToUpdate } = useTask();
+  const [status, setStatus] = useState<Status>("Incomplete");
+  const {
+    addTask,
+    taskForUpdate,
+    updateTask,
+    needToUpdate,
+    clearNeedToUpdate,
+  } = useTask();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (taskForUpdate && needToUpdate) {
       setTitle(taskForUpdate.title || "");
       setDescription(taskForUpdate.description || "");
       setPriority(taskForUpdate.priority || "low");
+      setStatus(taskForUpdate.status || "Incomplete");
     }
   }, [taskForUpdate, needToUpdate]);
 
   const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     if (!title || !description || !priority) {
       toast.error("All fields are required.");
       return;
@@ -29,15 +39,18 @@ const TaskForm = () => {
       title: title,
       description: description,
       priority: priority,
-      status: "Incomplete",
+      status: status,
     };
 
     if (taskForUpdate && needToUpdate) {
       updateTask(taskForUpdate.id, task);
       toast.success("Task updated successfully");
+      setLoading(false);
+      clearNeedToUpdate();
     } else {
       addTask(task);
       toast.success("Task created successfully");
+      setLoading(false);
     }
     setTitle("");
     setDescription("");
@@ -102,8 +115,8 @@ const TaskForm = () => {
         </div>
 
         <div>
-          <button type="submit" className="btn-blue">
-            Add Task
+          <button disabled={loading} type="submit" className="btn-blue">
+            {loading ? "Loading..." : needToUpdate ? "Update Task" : "Add Task"}
           </button>
         </div>
       </form>

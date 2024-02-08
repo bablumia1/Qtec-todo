@@ -3,6 +3,7 @@ import { ITask } from "../types";
 import { useTask } from "../hooks/useTask";
 import { toast } from "react-toastify";
 import { getBorderColor } from "../utils";
+import TaskToggle from "./TaskToggle";
 
 interface Props {
   task: ITask;
@@ -22,10 +23,10 @@ const TaskList = ({ task }: Props): JSX.Element => {
         task.priority
       )}`}
     >
-      <div className="flex w-80 items-center justify-between space-x-6 p-6">
+      <div className="flex items-center justify-between p-6 space-x-6 w-80">
         <div className="flex-1 truncate ">
           <div className="flex items-center justify-between space-x-3">
-            <h3 className="truncate text-sm font-medium text-gray-900">
+            <h3 className="text-sm font-medium text-gray-900 truncate">
               {task.title}
             </h3>
             <span
@@ -38,31 +39,35 @@ const TaskList = ({ task }: Props): JSX.Element => {
               {task.status}
             </span>
           </div>
-          <p className="mt-1 truncate  text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 truncate">
             {task.description}
           </p>
         </div>
       </div>
       <div>
-        <div className="-mt-px flex divide-x divide-gray-200">
-          <div className="flex w-0 flex-1">
+        <div className="flex -mt-px divide-x divide-gray-200">
+          <div className="flex items-center justify-center flex-1 w-0">
+            <TaskToggle task={task} />
+          </div>
+          <div className="flex flex-1 w-0">
             <button
               onClick={() => getTaskById(task.id)}
-              className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-2 text-sm font-semibold text-gray-900"
+              className="relative inline-flex items-center justify-center flex-1 w-0 py-2 -mr-px text-sm font-semibold text-gray-900 border border-transparent rounded-bl-lg gap-x-3"
             >
               <PencilIcon
-                className="h-5 w-5 text-gray-400"
+                className="w-5 h-5 text-gray-400"
                 aria-hidden="true"
               />
               Edit
             </button>
           </div>
-          <div className="-ml-px flex w-0 flex-1">
+
+          <div className="flex flex-1 w-0 -ml-px">
             <button
               onClick={() => handleDelete(task.id)}
-              className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-2 text-sm font-semibold text-gray-900"
+              className="relative inline-flex items-center justify-center flex-1 w-0 py-2 text-sm font-semibold text-gray-900 border border-transparent rounded-br-lg gap-x-3"
             >
-              <TrashIcon className="h-5 w-5 text-rose-400" aria-hidden="true" />
+              <TrashIcon className="w-5 h-5 text-rose-400" aria-hidden="true" />
               Delete
             </button>
           </div>

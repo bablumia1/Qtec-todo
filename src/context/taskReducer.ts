@@ -13,6 +13,11 @@ export const taskReducer = (state: ITask[], action: ITaskAction): ITask[] => {
           ? action.payload.updatedTask
           : task
       );
+    case "CHANGE_STATUS":
+      const { id, status } = action.payload;
+      return state.map((task) =>
+        task.id === id ? { ...task, status: status } : task
+      );
 
     default:
       return state;
