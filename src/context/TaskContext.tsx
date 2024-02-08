@@ -43,11 +43,11 @@ export const TaskProvider: FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: "ADD_TASK", payload: task });
   };
 
-  const deleteTask = (taskId: number) => {
+  const deleteTask = (taskId: string) => {
     dispatch({ type: "DELETE_TASK", payload: taskId });
   };
 
-  const updateTask = (taskId: number, updatedTask: ITask) => {
+  const updateTask = (taskId: string, updatedTask: ITask) => {
     dispatch({ type: "UPDATE_TASK", payload: { id: taskId, updatedTask } });
   };
 

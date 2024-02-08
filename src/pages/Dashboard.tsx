@@ -3,6 +3,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import TaskForm from "../components/TaskForm";
+import TaskArea from "../components/TaskArea";
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -102,8 +103,10 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <main className="py-10 lg:pl-72">
-          <div className="px-4 sm:px-6 lg:px-8">{/* Your content */}</div>
+        <main className="py-10 lg:pl-96 flex justify-center items-center">
+          <div className="px-4 sm:px-6 lg:px-20  ">
+            <TaskArea />
+          </div>
         </main>
       </div>
     </>

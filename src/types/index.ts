@@ -12,11 +12,11 @@ export interface ITask {
 export interface ITaskContextState {
   tasks: ITask[];
   addTask: (task: ITask) => void;
-  deleteTask: (taskId: number) => void;
-  updateTask: (taskId: number, updatedTask: ITask) => void;
+  deleteTask: (taskId: string) => void;
+  updateTask: (taskId: string, updatedTask: ITask) => void;
 }
 
 export type ITaskAction =
   | { type: "ADD_TASK"; payload: ITask }
-  | { type: "DELETE_TASK"; payload: number }
-  | { type: "UPDATE_TASK"; payload: { id: number; updatedTask: ITask } };
+  | { type: "DELETE_TASK"; payload: string }
+  | { type: "UPDATE_TASK"; payload: { id: string; updatedTask: ITask } };
