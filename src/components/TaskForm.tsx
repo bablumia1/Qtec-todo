@@ -68,6 +68,7 @@ const TaskForm = () => {
             <input
               id="title"
               name="title"
+              placeholder="Title"
               value={title}
               type="text"
               autoComplete="off"
@@ -85,6 +86,7 @@ const TaskForm = () => {
             <textarea
               id="description"
               name="description"
+              placeholder="Description"
               value={description}
               rows={3}
               autoComplete="off"

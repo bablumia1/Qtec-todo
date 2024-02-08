@@ -1,30 +1,26 @@
-# React + TypeScript + Vite
+# Todo List Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple Todo List application developed using React and TypeScript. It
+allows users to manage tasks by adding, editing, marking as completed, and
+deleting them. Each task has a status (completed or incomplete) and a priority
+(low, medium, or high), visually represented with different colors.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Display a list of tasks with their status (completed or incomplete).
+- Add, edit, mark as completed, and delete tasks.
+- Counters for total tasks and completed tasks.
+- Basic styling for a clean and user-friendly interface.
+- Utilizes React hooks for state management.
+- Implements local storage to persist tasks even after page refresh.
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Start the development server using `npm start`.
+4. Access the application in your web browser at `http://localhost:3000`.
 
-- Configure the top-level `parserOptions` property like this:
+## License
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+This project is licensed under the [MIT License](LICENSE).
