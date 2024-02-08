@@ -1,7 +1,39 @@
+import { ChangeEvent, useState } from "react";
+import { toast } from "react-toastify";
+import { useTask } from "../hooks/useTask";
+import { ITask, Prority } from "../types";
+import { generateUUID } from "../utils/generateUUID";
+
 const TaskForm = () => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState<Prority>("low");
+  const { addTask } = useTask();
+
+  const handleSubmit = (event: ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!title || !description || !priority) {
+      toast.error("All fields are required.");
+      return;
+    }
+    const task: ITask = {
+      id: generateUUID(),
+      title: title,
+      description: description,
+      priority: priority,
+      status: "Incomplete",
+    };
+
+    addTask(task);
+    toast.success("Task created success");
+    setTitle("");
+    setDescription("");
+    setPriority("low");
+  };
+
   return (
     <div>
-      <form className="space-y-6" action="#" method="POST">
+      <form className="space-y-6" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title" className="input-label">
             Title
@@ -10,10 +42,11 @@ const TaskForm = () => {
             <input
               id="title"
               name="title"
+              value={title}
               type="text"
               autoComplete="off"
-              required
               className="form-input"
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
         </div>
@@ -26,10 +59,11 @@ const TaskForm = () => {
             <textarea
               id="description"
               name="description"
+              value={description}
               rows={3}
               autoComplete="off"
-              required
               className="form-input"
+              onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
         </div>
@@ -43,8 +77,9 @@ const TaskForm = () => {
               id="priority"
               name="priority"
               autoComplete="off"
-              required
+              value={priority}
               className="form-input"
+              onChange={(e) => setPriority(e.target.value as Prority)}
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>
